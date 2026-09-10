@@ -13,6 +13,8 @@ A real-time, responsive Telegram chatbot that listens to user prompts, processes
 ##  Workflow Architecture
 ![Small ChatGPT by Telegram](Small%20ChatGPT%20by%20Telegram.png)
 
+![Small ChatGPT by Telegram](Small%20ChatGPT%20by%20Telegram%20respond.png)
+
 ##  Tech Stack & Tools
 * **n8n**
 * **Telegram Bot API**
