@@ -1,0 +1,142 @@
+{
+  "name": "Small ChatGPT",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "451cd879-e7db-4204-91a2-c98997bea3f0",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -160,
+        -128
+      ],
+      "webhookId": "785ff1a4-26cd-4cc1-b377-16d94915506c",
+      "credentials": {
+        "telegramApi": {
+          "id": "ZjjilDco0ILaBfG1",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "batching": {}
+      },
+      "id": "69f13f23-30f0-4060-8920-d8bd27b09364",
+      "name": "Basic LLM Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        32,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}\n",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "82b4d6c5-9dfe-4109-b741-188d7020bb7e",
+      "name": "Send a text message",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        304,
+        -128
+      ],
+      "webhookId": "a1f98124-5e0e-4fca-87af-aba46e3816be",
+      "credentials": {
+        "telegramApi": {
+          "id": "ZjjilDco0ILaBfG1",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-5",
+          "cachedResultName": "Claude Sonnet 5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.6,
+      "position": [
+        -48,
+        80
+      ],
+      "id": "01d16265-c63e-4fef-bfc1-ebb8a551456c",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c6d262cc-f639-4d9f-815d-3dc281bf4ffd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d8ddd112a514494dfa3692970b3872c291d14f88bbd9f8c611847c8e4a9b0112"
+  },
+  "nodeGroups": [],
+  "id": "G9DgdJXpu1tIhcxd",
+  "tags": []
+}
